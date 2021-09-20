@@ -1,10 +1,10 @@
-<app-header></app-header>
-
+<app-header (displayedCom)="Displaying($event)"></app-header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-recipes></app-recipes>
-      <app-shopping-list></app-shopping-list>
+      <!-- <app-recipes [ngStyle]="{display: comNam == 'R' ? 'block': 'none'}" ></app-recipes> -->
+      <app-recipes *ngIf="comNam === 'R'" ></app-recipes>
+      <app-shopping-list *ngIf="comNam !== 'R'"></app-shopping-list>
     </div>
   </div>
 </div>
