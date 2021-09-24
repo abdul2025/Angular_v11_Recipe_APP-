@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  comNam: string = 'R';
+
 
   constructor(){}
 
@@ -15,8 +15,4 @@ export class AppComponent implements OnInit{
     
   }
 
-  Displaying(event: string){
-    this.comNam = event;
-
-  }
 }
