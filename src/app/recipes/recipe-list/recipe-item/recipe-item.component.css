@@ -1,0 +1,12 @@
+.list-group-item.active {
+    background-color: #629292  !important;
+}
+.custom:hover {
+    color: #d1d3d3  !important;
+    background-color: #467575  !important;
+
+}
+
+.custom {
+    color: #032c2c;
+}
