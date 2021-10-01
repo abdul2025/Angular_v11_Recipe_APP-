@@ -1,1 +1,56 @@
-<p>recipe-edit works!</p>
+<div class="row" style="margin-top: 11%;">
+    
+    <div class="col-xs-12">
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+            <div formGroupName="recipeFileds">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class=" btn btn-success" style="margin-right:0.5%" [disabled]='!recipeForm.valid' >Save</button>
+                        <button class=" btn btn-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" formControlName="name" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label for="ImagePath">Image URL</label>
+                            <input type="text" id="ImagePath" class="form-control" formControlName="imageURL" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea type="text" id="Description" class="form-control" rows="6" formControlName="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label for="ingredients">ingredients</label>
+                <div class="col-xs-12" formArrayName="ingredients">
+                    <div class="input-group mb-3" *ngFor="let ingre of controls; let i=index" [formGroupName]="i">
+                            <input type="text" class="form-control" style="margin-right: 1%;" formControlName="name" required>
+                            <input type="number" class="form-control" formControlName="amount" style="margin-right: 1%;" required>
+                            <button class="btn btn-danger" type="button" (click)="onDeleteIngre(i)">X</button>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-success" (click)="onAddNewIngre()">Add ingredients</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
