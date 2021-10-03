@@ -22,7 +22,10 @@ export  class RecipeService {
           new Ingredient('Olive oil',3)])
       ];
 
-
+    setRecipes(recipes: Recipe[]){
+        this.recipes = recipes;
+        this.addNewRecipes.next(this.recipes.slice())
+    }
     getRecipe() {
         return this.recipes.slice()
     }
@@ -37,6 +40,11 @@ export  class RecipeService {
     }
     updateRecipe (index: number, updatedRecipe: Recipe) {
         this.recipes[index] = updatedRecipe
+        this.addNewRecipes.next(this.recipes)
+    }
+
+    deleteRecipe(index: number) {
+        this.recipes.splice(index, 1)
         this.addNewRecipes.next(this.recipes)
     }
 }

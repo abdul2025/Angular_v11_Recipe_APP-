@@ -2,3 +2,19 @@
     background-color: #eff1f1;
 
 }
+
+
+.dropdown-menu {
+    background-color: #629292    !important;
+    width: 20vw;
+    
+}
+.custom:hover {
+    color: #d1d3d3  !important;
+    background-color: #238181  !important;
+
+}
+
+.custom {
+    color: #bdbdbd  !important;
+}
