@@ -2,6 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Recipe } from "../recipes/recipe.model";
 import { RecipeService } from "../recipes/recipe.service";
+// import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -18,9 +20,22 @@ export class DataStorageService {
 
 
     fetchData() {
-        this.http.get<Recipe[]>('https://recipeapp-2c302-default-rtdb.firebaseio.com/recipes.json').subscribe(recipes => {
-            this.recipeServ.setRecipes(recipes)
-            console.log(recipes)
-        })        
+        return this.http.get<Recipe[]>('https://recipeapp-2c302-default-rtdb.firebaseio.com/recipes.json')
+        .pipe(
+            map(recipe => {
+                
+            // To ensure ingredients filed are added to Firebase API, whether empy or exsited 
+                return recipe.map(recipe => {
+                    return {
+                        ...recipe, ingredients: recipe.ingredients ? recipe.ingredients: []
+                    };
+                });
+            }),
+            tap(recipe=> {
+                console.log(recipe)
+                this.recipeServ.setRecipes(recipe)
+            })
+        )
+        
     }
 }
