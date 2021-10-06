@@ -4,18 +4,22 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/recipes']" routerLinkActive="router-link-active"  aria-current="page">Recipes</a>
+            <a class="nav-link" [routerLink]="['/recipes']" routerLinkActive="router-link-active"  aria-current="page" *ngIf="isAuth">Recipes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/shopping-list']" routerLinkActive="router-link-active" aria-current="page">Shopping List</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/auth']" routerLinkActive="router-link-active" aria-current="page">Authentication</a>
+            <a class="nav-link" [routerLink]="['/auth']" routerLinkActive="router-link-active" aria-current="page" *ngIf="!isAuth">Authentication</a>
           </li>
 
         </ul>
         <ul class="navbar-nav nav ">
-            <li class="nav-item dropdown">
+
+          <li class="nav-item" *ngIf="isAuth">
+            <a href="" class="nav-link" style=" cursor: pointer;">Logout</a>
+          </li>
+            <li class="nav-item dropdown" *ngIf="isAuth">
                 <a class="nav-link dropdown-toggle" appDropdown id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Manage
                 </a>

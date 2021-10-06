@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { DataStorageService } from '../shared/data-storage.service';
 
 @Component({
@@ -6,11 +8,19 @@ import { DataStorageService } from '../shared/data-storage.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  constructor(private dataStorgeService: DataStorageService) { }
+export class HeaderComponent implements OnInit, OnDestroy{
+  private userSub: Subscription;
+
+  isAuth = false
+
+  constructor(private dataStorgeService: DataStorageService, private authService: AuthService) { }
 
   ngOnInit(): void {
-  
+   this.userSub = this.authService.user.subscribe(user =>  {
+    // opposite and reverse the status of the user exists
+     this.isAuth = !!user
+   })
+    
   }
 
   onSaveData() {
@@ -20,6 +30,10 @@ export class HeaderComponent implements OnInit {
 
   onFetchData(){
     this.dataStorgeService.fetchData().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe()
   }
 
 }
