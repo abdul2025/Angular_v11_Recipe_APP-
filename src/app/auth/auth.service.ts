@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { User } from "./auth.user.model";
@@ -18,10 +19,11 @@ export interface AuthRespData{
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-    user = new BehaviorSubject<User>(null) 
-    token: string | null;
+    user = new BehaviorSubject<User>(null)
+    
+    private tokenExpirationTimer: any;
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private router: Router){}
 
     singUp(email: string, password: string){
         
@@ -33,7 +35,7 @@ export class AuthService {
         }
         )
         .pipe(tap(resData => {
-            this.handleAuthintication(
+            this.handleAuthentication(
                 resData.email,
                 resData.localId,
                 resData.idToken,
@@ -51,54 +53,93 @@ export class AuthService {
         {
             email: email,
             password: password,
-            returnScureToken: true
-        }
+            returnSecureToken: true
+          }
         )
-        .pipe(tap(resData => {
-                this.handleAuthintication(
-                    resData.email,
-                    resData.localId,
-                    resData.idToken,
-                    +resData.expiresIn
-                    )
-                
-            
-        }),catchError(this.handleError))
-    }
-
-    private handleAuthintication(email: string, userId: string, token: string, expiresIn: number) {
-        // expiresIn is a sting coming as seconds 
-        // and the getTime return with millseconds 
-        // multipy the expiresIn by 1000 to have a miliseconds not seconds
-        const expirationDate = new Date(new Date().getTime() + expiresIn * 1000)
-        const user = new User(
-            email,
-            userId,
-            token,
-            expirationDate
+        .pipe(
+          catchError(this.handleError),
+          tap(resData => {
+            this.handleAuthentication(
+              resData.email,
+              resData.localId,
+              resData.idToken,
+              +resData.expiresIn
+            );
+          })
         );
-        this.user.next(user)
     }
 
-    private handleError(errorRes: HttpErrorResponse){
-        console.log(errorRes.error.error.message)
-        // Defualt massage
-        let errorMessage = 'An unknown error occurred!';
-        //  check if that OBJ has error element and nested error elem
-        if (!errorRes.error || !errorRes.error.error ) {
-            return throwError(errorMessage)
+    autoLogin() {
+        const userDate : {
+            email: string,
+            id: string,
+            _token: string,
+            _tokenExpirationDate: string
+        } = JSON.parse(localStorage.getItem('userDate'))
+        console.log(userDate)
+        if (!userDate) { 
+            return;
         }
-        errorMessage = errorRes.error.error.message
 
-        // for a customized ERROR messages apply the switch cases/
-        // switch (errorRes.error.error.message) {
-        //     case 'EMAIL_EXISTS':
-        //         errorMessage = 'This email exists already';
-        //         break;
-        //     case "INVALID_PASSWORD":
-        //         errorMessage = 'INVALID_PASSWORD, try another one'
-        // }
-        return throwError(errorMessage)
+        const loadedUser = new User(userDate.email, userDate.id, userDate._token, new Date(userDate._tokenExpirationDate))
+        
+        console.log(loadedUser)
+
+        if (loadedUser.token) {
+            this.user.next(loadedUser)
+            const expirationDuration = new Date(userDate._tokenExpirationDate).getTime()  - new Date().getTime()
+            this.autoLogout(expirationDuration)
+        }
+    }
+
+    logout() {
+        this.user.next(null)
+        this.router.navigate(['/auth']);
+        localStorage.removeItem('userDate')
+
+        if(this.tokenExpirationTimer) {
+            clearTimeout(this.tokenExpirationTimer)
+        }
+        this.tokenExpirationTimer = null
+    }
+
+
+    autoLogout(expirationDuration: number) {
+        this.tokenExpirationTimer = setTimeout(()=>{
+            this.logout()
+        }, expirationDuration)
+    }
+  
+    private handleAuthentication(
+      email: string,
+      userId: string,
+      token: string,
+      expiresIn: number
+    ) {
+      const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+      const user = new User(email, userId, token, expirationDate);
+      this.user.next(user);
+      this.autoLogout(expiresIn * 1000)
+      localStorage.setItem('userDate', JSON.stringify(user))
+    }
+  
+    private handleError(errorRes: HttpErrorResponse) {
+      let errorMessage = 'An unknown error occurred!';
+      if (!errorRes.error || !errorRes.error.error) {
+        return throwError(errorMessage);
+      }
+      switch (errorRes.error.error.message) {
+        case 'EMAIL_EXISTS':
+          errorMessage = 'This email exists already';
+          break;
+        case 'EMAIL_NOT_FOUND':
+          errorMessage = 'This email does not exist.';
+          break;
+        case 'INVALID_PASSWORD':
+          errorMessage = 'This password is not correct.';
+          break;
+      }
+      return throwError(errorMessage);
     }
 
     

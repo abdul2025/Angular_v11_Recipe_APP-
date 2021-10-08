@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
    this.userSub = this.authService.user.subscribe(user =>  {
+     console.log(user)
     // opposite and reverse the status of the user exists
      this.isAuth = !!user
    })
@@ -30,6 +31,12 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   onFetchData(){
     this.dataStorgeService.fetchData().subscribe();
+  }
+
+
+
+  onLogout() {
+    this.authService.logout()
   }
 
   ngOnDestroy() {

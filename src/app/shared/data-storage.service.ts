@@ -26,15 +26,12 @@ export class DataStorageService {
         // using exhaustMap where will replace the outter observable by the inner one
         // and apply the reset of the opeartors
         // so the acutal return observable is the HTTP one 
-        return this.authService.user.pipe(take(1), exhaustMap(user => {
-            return this.http.get<Recipe[]>('https://recipeapp-2c302-default-rtdb.firebaseio.com/recipes.json',
-             {
-                 params: new HttpParams().set('auth', user.token)
-             }
-             );
-        }),
-        map(recipe => {  
-            // To ensure ingredients filed are added to Firebase API, whether empy or exsited 
+        
+        return this.http.get<Recipe[]>('https://recipeapp-2c302-default-rtdb.firebaseio.com/recipes.json')
+        .pipe(
+            map(recipe => {
+
+                // To ensure ingredients filed are added to Firebase API, whether empy or exsited 
                 return recipe.map(recipe => {
                     return {
                         ...recipe, ingredients: recipe.ingredients ? recipe.ingredients: []
@@ -45,6 +42,6 @@ export class DataStorageService {
                 console.log(recipe)
                 this.recipeServ.setRecipes(recipe)
             })
-        )        
+        )   
     }
 }
