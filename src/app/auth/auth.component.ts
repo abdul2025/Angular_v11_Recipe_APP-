@@ -80,4 +80,9 @@ export class AuthCompnent implements OnInit {
         
         this.authForm.reset()
     }
+
+
+    handleError() {
+        this.error = null
+    }
 }

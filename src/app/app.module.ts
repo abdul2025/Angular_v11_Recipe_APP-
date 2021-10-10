@@ -21,6 +21,7 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { AuthCompnent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.comonent';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AlertComponent } from './shared/alert/alert.component';
 
 
 
@@ -34,7 +35,12 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     RecipeItemComponent,
     ShoppingListComponent,
     ShoppingEditComponent, 
-    DropdownDirective, RecipeStartComponent, RecipeEditComponent, AuthCompnent, LoadingSpinnerComponent
+    DropdownDirective, 
+    RecipeStartComponent,
+    RecipeEditComponent,
+    AuthCompnent, 
+    LoadingSpinnerComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +48,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     FormsModule,
     AppRoutingModule, 
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule, 
   ],
   providers: [RecipeService, ShoppingService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]

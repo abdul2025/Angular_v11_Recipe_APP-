@@ -1,8 +1,9 @@
 <div class="row" style="justify-content: center; height: 100vh; align-content: center;">
-    <div class="col-xs-12 col-md-6 col-md-offset-3">
-        <div class="alert alert-danger" *ngIf="error">
+    <div class="col-xs-12 col-md-6 col-md-offset-3 custom">
+        <!-- <div class="alert alert-danger" *ngIf="error">
             {{error}}
-        </div>
+        </div> -->
+        <app-alert [message]="error" *ngIf="error" (click)='handleError()'></app-alert>
         <div *ngIf="isLoading" style="text-align: center;">
             <app-loading-spinner></app-loading-spinner>
         </div>
@@ -16,8 +17,8 @@
                 <input type="passowrd" formControlName="passowrd" minlength="6" required id="passowrd" class="form-control">
             </div>
             <div style="margin-top: 4%;">
-                <button class="btn btn-primary" [disabled]="!authForm.valid" type="submit">{{isLoginMode ? 'Login': 'Sign Up'}}</button> | 
-                <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Switch to {{isLoginMode ? 'Sign Up' : 'Login'}}</button>
+                <button class="btn " [disabled]="!authForm.valid" type="submit">{{isLoginMode ? 'Login': 'Sign Up'}}</button> | 
+                <button class="btn " type="button" (click)="onSwitchMode()">Switch to {{isLoginMode ? 'Sign Up' : 'Login'}}</button>
             </div>
         </form>
 

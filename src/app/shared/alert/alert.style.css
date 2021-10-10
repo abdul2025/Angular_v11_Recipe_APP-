@@ -1,22 +1,26 @@
-input.ng-invalid.ng-touched {
-    border: 1px solid red;
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 50;
 }
 
-.custom {
-    padding: 6%;
-    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+
+.alert-box {
+    position: fixed;
+    top: 34vh;
+    left: 31vw;
+    width: 37vw;
+    padding: 16px;
+    z-index: 100;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     background-color:  #e7e6e6 ;
     border-radius: 10px;
     color: #324d4d;
-    font-weight: 700;
-
-    
-}
-
-
-label {
-    padding: 1%;
+    box-shadow: rgb(0 0 0 / 19%) 0px 10px 20px, rgb(3 84 88 / 23%) 0px 6px 6px;
 }
 
 button {
@@ -26,11 +30,13 @@ button {
 }
 
 
+
+
 button:hover {
-    /* background-color: #375353 ;
-    border: 1px solid #275252 ; */
     color: #9b9b9b;
 }
 
 
-  
+.alert-box-action {
+    text-align: right;
+}

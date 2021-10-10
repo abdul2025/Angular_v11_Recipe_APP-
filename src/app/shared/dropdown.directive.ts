@@ -13,11 +13,20 @@ export class DropdownDirective {
   constructor(private elementRef: ElementRef,
               private renderer: Renderer2) {
   }
- 
-  @HostListener('click')
-  onClick() {
+  
+  @HostListener('document:click', ['$event'])
+  // @HostListener('click')
+
+
+  onClick(event) {
     const dropdown = this.elementRef.nativeElement.nextElementSibling;
-    if (!this.isOpen) {
+    // this.renderer.listen(dropdown, 'click', ()=>{
+    //   console.log('safkjlk')
+    // })
+
+    const eventStatus = this.elementRef.nativeElement.contains(event.target);
+
+    if (!this.isOpen && eventStatus) {
       this.renderer.addClass(dropdown, 'show');
     } else {
       this.renderer.removeClass(dropdown, 'show');
