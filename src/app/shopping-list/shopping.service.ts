@@ -30,6 +30,7 @@ export class ShoppingService {
     }
 
     addIngredient(ingredient: Ingredient){
+        
         this.ingredients.push(ingredient)
         this.ingredientAdded.next(this.ingredients.slice());
     }

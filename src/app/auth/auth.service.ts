@@ -1,9 +1,13 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, throwError } from "rxjs";
+import { BehaviorSubject, from, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { User } from "./auth.user.model";
+
+import { environment } from '../../environments/environment'
+
+
 
 export interface AuthRespData{
     idToken: string,
@@ -27,7 +31,7 @@ export class AuthService {
 
     singUp(email: string, password: string){
         
-        return this.http.post<AuthRespData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDbVES37IVuFleeH-6GDJfnOGmniaIINX0', 
+        return this.http.post<AuthRespData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.API_KEY}`, 
         {
             email: email,
             password: password,
@@ -49,7 +53,7 @@ export class AuthService {
 
 
     login(email: string, password: string){
-        return this.http.post<AuthRespData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDbVES37IVuFleeH-6GDJfnOGmniaIINX0', 
+        return this.http.post<AuthRespData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.API_KEY}`, 
         {
             email: email,
             password: password,
@@ -105,6 +109,7 @@ export class AuthService {
 
 
     autoLogout(expirationDuration: number) {
+      console.log(expirationDuration)
         this.tokenExpirationTimer = setTimeout(()=>{
             this.logout()
         }, expirationDuration)
