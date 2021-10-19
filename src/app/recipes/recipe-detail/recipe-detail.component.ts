@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ShoppingService } from 'src/app/shopping-list/shopping.service';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 
@@ -9,12 +8,16 @@ import { RecipeService } from '../recipe.service';
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.css']
 })
+
+
+@Injectable()
+
+
 export class RecipeDetailComponent implements OnInit {
   recipe: Recipe;
   id: number;
 
   constructor(
-    private shoppingService: ShoppingService, 
     private recipesService: RecipeService, 
     private route: ActivatedRoute, 
     private router: Router
@@ -36,7 +39,7 @@ export class RecipeDetailComponent implements OnInit {
   ToShoppingList(){
     // console.log(this.recipe.ingredients)
     
-    this.shoppingService.addIngredientsFromRecipe(this.recipe.ingredients)
+    this.recipesService.addIngredientsFromRecipe(this.recipe.ingredients)
   }
 
   onDeleteRecipe() {

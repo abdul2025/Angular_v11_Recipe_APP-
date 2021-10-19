@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { AuthService, AuthRespData } from "./auth.service";
+
+import * as fromApp from '../store/app.reducer'
+import * as AuthActions from './store/auth.actions'
 
 @Component({
     selector: 'app-auth',
@@ -23,10 +26,15 @@ export class AuthCompnent implements OnInit {
     error: string;
 
 
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private store: Store<fromApp.AppState>) {}
 
 
     ngOnInit(): void {
+        this.store.select('auth').subscribe(authState => {
+            this.isLoading = authState.loading,
+            this.error = authState.authError
+
+        })
         this.initForm()
     }
 
@@ -61,22 +69,25 @@ export class AuthCompnent implements OnInit {
         }
          
         if (this.isLoginMode){
-            authObs = this.authService.login(email, passowrd)
+            // authObs = this.authService.login(email, passowrd)
+            this.store.dispatch(new AuthActions.LogingStart({email: email, password: passowrd}))
         }else {
             authObs = this.authService.singUp(email, passowrd)
         }
-        
-        this.isLoading = true;
+        // this.store.select('auth').subscribe(authState => {
 
-        authObs.subscribe(resAuthData => {
-            console.log(resAuthData);
-            this.router.navigate(['/recipes'])
-            this.isLoading = false
-        }, errorMessage => {
-            console.log(errorMessage)
-            this.error = errorMessage
-            this.isLoading = false
-        })
+        // })
+        // this.isLoading = true;
+
+        // authObs.subscribe(resAuthData => {
+        //     console.log(resAuthData);
+        //     this.router.navigate(['/recipes'])
+        //     this.isLoading = false
+        // }, errorMessage => {
+        //     console.log(errorMessage)
+        //     this.error = errorMessage
+        //     this.isLoading = false
+        // })
         
         this.authForm.reset()
     }
