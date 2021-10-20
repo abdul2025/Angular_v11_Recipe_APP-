@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { AuthService, AuthRespData } from "./auth.service";
+import { Subscription } from "rxjs";
+import { AuthService } from "./auth.service";
 
 import * as fromApp from '../store/app.reducer'
 import * as AuthActions from './store/auth.actions'
@@ -14,7 +14,7 @@ import * as AuthActions from './store/auth.actions'
 })
 
 
-export class AuthCompnent implements OnInit {
+export class AuthCompnent implements OnInit, OnDestroy {
     
     authForm: FormGroup
     
@@ -25,14 +25,20 @@ export class AuthCompnent implements OnInit {
 
     error: string;
 
+    private storeSub: Subscription;
 
-    constructor(private authService: AuthService, private store: Store<fromApp.AppState>) {}
+
+    constructor(private store: Store<fromApp.AppState>) {}
 
 
     ngOnInit(): void {
-        this.store.select('auth').subscribe(authState => {
+        this.storeSub = this.store.select('auth').subscribe(authState => {
             this.isLoading = authState.loading,
             this.error = authState.authError
+            console.log(this.error)
+            // if (this.error) {
+            //     this.handleError()
+            // }
 
         })
         this.initForm()
@@ -58,7 +64,6 @@ export class AuthCompnent implements OnInit {
 
     onSubmit() {
 
-        let authObs: Observable<AuthRespData>
         const email = this.authForm.value.email;
         const passowrd = this.authForm.value.passowrd;
         
@@ -69,31 +74,22 @@ export class AuthCompnent implements OnInit {
         }
          
         if (this.isLoginMode){
-            // authObs = this.authService.login(email, passowrd)
             this.store.dispatch(new AuthActions.LogingStart({email: email, password: passowrd}))
         }else {
-            authObs = this.authService.singUp(email, passowrd)
+            this.store.dispatch(new AuthActions.Signup({email: email, password: passowrd}))
         }
-        // this.store.select('auth').subscribe(authState => {
-
-        // })
-        // this.isLoading = true;
-
-        // authObs.subscribe(resAuthData => {
-        //     console.log(resAuthData);
-        //     this.router.navigate(['/recipes'])
-        //     this.isLoading = false
-        // }, errorMessage => {
-        //     console.log(errorMessage)
-        //     this.error = errorMessage
-        //     this.isLoading = false
-        // })
-        
         this.authForm.reset()
     }
 
 
     handleError() {
-        this.error = null
+        this.store.dispatch(new AuthActions.ClearError());
+
+    }
+
+    ngOnDestroy() {
+        if(this.storeSub){
+            this.storeSub.unsubscribe()
+        }
     }
 }
