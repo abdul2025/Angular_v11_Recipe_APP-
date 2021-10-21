@@ -17,7 +17,9 @@ readonly type = AUTHINTICATE_SUCCESS
         email: string,
         userId: string,
         token: string,
-        expirationDate: Date }) {}
+        expirationDate: Date,
+        redirect: boolean    
+    }) {}
 }
 
 export class Logout implements Action {
