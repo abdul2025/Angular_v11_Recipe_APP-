@@ -15,8 +15,10 @@ import * as RecipeActions from '../recipes/store/recipe.actions'
 })
 export class HeaderComponent implements OnInit, OnDestroy{
   private userSub: Subscription;
+  private RecipeSub: Subscription;
 
   isAuth = false
+  isMobileMode = false
 
   constructor(
     private store: Store<fromApp.AppState>) { }
@@ -33,7 +35,16 @@ export class HeaderComponent implements OnInit, OnDestroy{
   }
 
   onSaveData() {
-    this.store.dispatch(new RecipeActions.StoreRecipes())
+    console.log('safklh')
+    this.RecipeSub = this.store.select('recipes').pipe(map(recipes => {
+      return recipes.recipes
+    })).subscribe(recipes => {
+      if(recipes.length !== 0){
+        console.log(recipes.length)
+        this.store.dispatch(new RecipeActions.StoreRecipes())
+      }
+    })
+    
   }
 
   onFetchData(){
@@ -49,6 +60,20 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     this.userSub.unsubscribe()
+    this.RecipeSub.unsubscribe()
+  }
+
+
+  dropDownHeader() {
+    this.isMobileMode == false ? this.isMobileMode = true : this.isMobileMode = false
+    console.log(this.isMobileMode)
+  }
+
+
+  CloseHeader() {
+    this.isMobileMode = !this.isMobileMode
+    console.log(this.isMobileMode)
+
   }
 
 }

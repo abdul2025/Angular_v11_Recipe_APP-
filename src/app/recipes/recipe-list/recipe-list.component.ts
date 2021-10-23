@@ -7,11 +7,13 @@ import {Recipe} from '../recipe.model';
 import * as fromApp from '../../store/app.reducer'
 import { Store } from "@ngrx/store";
 import { map } from 'rxjs/operators';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+  styleUrls: ['./recipe-list.component.css'],
+  
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[];
@@ -39,5 +41,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+
 
 }

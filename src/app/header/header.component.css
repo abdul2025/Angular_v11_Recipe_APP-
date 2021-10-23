@@ -5,20 +5,38 @@
 
 
 .dropdown-menu {
-    background-color: #629292    !important;
-    width: 20vw;
+    background-color: #eff1f1;
+
     
 }
 .custom:hover {
-    color: #d1d3d3  !important;
-    background-color: #238181  !important;
+    color: #3b3b3b  !important;
+    background-color: #dadddd  !important;
+
 
 }
 
 .custom {
-    color: #bdbdbd  !important;
+    text-align: center;
+    color: #3b3b3b  !important;
+
+
 }
 
 .custom-shadow {
     box-shadow: rgb(0 0 0 / 19%) 0px 10px 20px, rgb(3 84 88 / 23%) 0px 6px 6px;
 }
+/* 
+.custom-headerDropDown {
+    transform: translateX(100px);
+    transition-duration: 2s;
+} */
+/* .custom-headerDropDown:hover {
+    transform: translateX(10px);
+    transition-duration: 0.5s;
+}
+
+a:hover {
+    background-color: #eff1f1;
+    padding-left: 1%;
+} */

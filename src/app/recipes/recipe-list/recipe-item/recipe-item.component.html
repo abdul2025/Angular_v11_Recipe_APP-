@@ -4,9 +4,10 @@
 [routerLink]="[index]" routerLinkActive="active" 
 style="cursor: pointer;"
 class="list-group-item custom clearfix"
+[@RecipeList]
 >
     <div class="float-start">
-        <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+        <h6 class="list-group-item-heading">{{recipe.name}}</h6>
         <p class="list-group-item-text">{{recipe.description}}</p>
     </div>
     <span class="float-end">
