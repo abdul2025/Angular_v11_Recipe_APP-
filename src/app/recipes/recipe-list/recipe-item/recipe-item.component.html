@@ -8,7 +8,7 @@ class="list-group-item custom clearfix"
 >
     <div class="float-start">
         <h6 class="list-group-item-heading">{{recipe.name}}</h6>
-        <p class="list-group-item-text">{{recipe.description}}</p>
+        <p class="list-group-item-text" style="word-break: break-all;">{{recipe.description}}</p>
     </div>
     <span class="float-end">
         <img [src]="recipe.imagePath" alt="Recipe-Image" class="img-responsive" style="max-height: 50px; border-radius: 30%;">

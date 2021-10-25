@@ -37,12 +37,13 @@ export class HeaderComponent implements OnInit, OnDestroy{
   onSaveData() {
     console.log('safklh')
     this.RecipeSub = this.store.select('recipes').pipe(map(recipes => {
+      console.log(recipes)
       return recipes.recipes
     })).subscribe(recipes => {
-      if(recipes.length !== 0){
-        console.log(recipes.length)
-        this.store.dispatch(new RecipeActions.StoreRecipes())
-      }
+      // if(recipes.length !== 0){
+      console.log(recipes.length)
+      this.store.dispatch(new RecipeActions.StoreRecipes())
+      // }
     })
     
   }
