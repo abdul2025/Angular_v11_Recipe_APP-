@@ -6,5 +6,5 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 
 Application is hosted at Firbase.
+Visit [Recipe Books](https://recipeapp-2c302.web.app/)
 
-Visit [Dic Game](https://recipeapp-2c302.web.app/)
